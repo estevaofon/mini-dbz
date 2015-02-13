@@ -1,0 +1,6 @@
+*pyc
+setup.py
+src/.idea
+src/.ropeproject
+dist
+*mpg
