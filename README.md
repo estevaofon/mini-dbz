@@ -9,8 +9,7 @@ Requirements: Python 2 or 3 + Pygame
 
 ####To play
 1. Download the zip file or clone the project.
-2. Open the src folder
-3. Run play.py
+2. Run play.py
 
 ####Controller Support
 Playable with keyboards or controllers.
