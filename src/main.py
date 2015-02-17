@@ -12,6 +12,19 @@ pygame.joystick.init()
 for x in range(pygame.joystick.get_count()):
     joystick = pygame.joystick.Joystick(x)
     joystick.init()
+
+player1 = Player(initial_action="down", player_id=1)
+player2 = Player(initial_action="down", player_id=2)
+player_pc = NPC(initial_action="down", player_id=0)
+power1 = SpriteAnimation(initial_action="void")
+power2 = SpriteAnimation(initial_action="void")
+power3 = SpriteAnimation(initial_action="void")
+power_dispute = SpriteAnimation(initial_action="void")
+power_dispute2 = SpriteAnimation(initial_action="void")
+effects = SpriteAnimation(initial_action="void")
+effects2 = SpriteAnimation(initial_action="void")
+clock = pygame.time.Clock()
+
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
@@ -26,11 +39,12 @@ class Main():
         scenery4_image = "resources/imagens/scenarios/arena-2-2.gif"
         scenery4 = pygame.image.load(scenery4_image)
         self.background = scenery4
-        #self.resolution = self.background.get_size()
+        # self.resolution = self.background.get_size()
         self.resolution = resolution
         self.width, self.height = self.resolution
         if window == 0:
-            self.screen = pygame.display.set_mode(self.resolution, pygame.FULLSCREEN, 32)
+            self.screen = pygame.display.set_mode(self.resolution,
+                                                  pygame.FULLSCREEN, 32)
         else:
             self.screen = pygame.display.set_mode(self.resolution)
         scenery1 = pygame.image.load(scenery1_image).convert()
@@ -45,13 +59,12 @@ class Main():
         trunks100x100 = "resources/imagens/player/trunks/trunks100x100.png"
         frieza100x100 = "resources/imagens/player/frieza/frieza100x100.png"
         gohan100x100 = "resources/imagens/player/gohan/gohan100x100.png"
-        self.photos3x4 = [pygame.image.load(goku100x100), pygame.image.load(vegeta100x100),
-                    pygame.image.load(gohan100x100), pygame.image.load(trunks100x100),
-                    pygame.image.load(frieza100x100)]
+        self.photos3x4 = [pygame.image.load(goku100x100),
+                          pygame.image.load(vegeta100x100), pygame.image.load(gohan100x100),
+                          pygame.image.load(trunks100x100), pygame.image.load(frieza100x100)]
         self.ch = pygame.transform.scale(self.photos3x4[0], (100, 100))
         self.background_openning = pygame.image.load(menu_image).convert()
         self.scene1 = pygame.transform.scale(self.scenery[0], (500, 300))
-        self.clock = pygame.time.Clock()
         pygame.mouse.set_visible(0)
         self.game_state = 0  # Menu
         self.previous_game_state = 0
@@ -86,36 +99,26 @@ class Main():
         self.yp2d = self.yp2
         self.played_once = False
         self.characters = ['goku', 'vegeta', 'gohan', 'trunks', 'frieza']
-        self.player1 = Player(initial_action="down", player_id=1)
-        self.player2 = Player(initial_action="down", player_id=2)
-        self.player_pc = NPC(initial_action="down", player_id=0)
-        self.power1 = SpriteAnimation(initial_action="void")
-        self.power2 = SpriteAnimation(initial_action="void")
-        self.power3 = SpriteAnimation(initial_action="void")
-        self.power_dispute = SpriteAnimation(initial_action="void")
-        self.power_dispute2 = SpriteAnimation(initial_action="void")
-        self.effects = SpriteAnimation(initial_action="void")
-        self.effects2 = SpriteAnimation(initial_action="void")
-        self.player1.load_power(self.power1)
-        self.player1.load_power(self.power_dispute)
-        self.player2.load_power(self.power_dispute2)
-        self.player1.load_power(self.effects)
-        self.player2.load_power(self.effects2)
-        self.player2.load_power(self.power2)
-        self.player_pc.load_power(self.power3)
-        self.player_pc.load_character(self.characters[1])
-        self.player2.load_character(self.characters[1])
-        self.pc_players = [self.player_pc]
-        self.human_players = [self.player1, self.player2]
-        self.player_pc.is_pc = True
-        self.powers = [self.power1, self.power2, self.power3]
+        player1.load_power(power1)
+        player1.load_power(power_dispute)
+        player2.load_power(power_dispute2)
+        player1.load_power(effects)
+        player2.load_power(effects2)
+        player2.load_power(power2)
+        player_pc.load_power(power3)
+        player_pc.load_character(self.characters[1])
+        player2.load_character(self.characters[1])
+        self.pc_players = [player_pc]
+        self.human_players = [player1, player2]
+        player_pc.is_pc = True
+        self.powers = [power1, power2, power3]
         self.delta = 13  # speed of the game
-        self.player2.facing_right = False
-        self.player2.x = 850
-        self.player2.y = 350
-        self.player_pc.x = 850
-        self.player_pc.y = 350
-        self.player_pc.xp = 0
+        player2.facing_right = False
+        player2.x = 850
+        player2.y = 350
+        player_pc.x = 850
+        player_pc.y = 350
+        player_pc.xp = 0
         self.move_one = True
         self.time1 = 0
         self.time3 = 0
@@ -126,45 +129,45 @@ class Main():
         Restarts the game
         """
         if self.vs_pc:
-            self.player_pc.action = "down"
-            self.player1.action = "down"
-            self.player1.pos = 1
-            self.player_pc.pos = 1
-            self.player1.movex, self.player1.movey = 0, 0
-            self.player_pc.movex, self.player_pc.movey = 0, 0
-            self.player1.facing_right = True
-            self.player_pc.facing_right = False
-            self.player1.x = 250
-            self.player1.y = 350
-            self.player_pc.x = 850
-            self.player_pc.y = 350
-            self.player1.hp = 400
-            self.player2.hp = 400
-            self.player2.xp = 50
-            self.player_pc.hp = 400
-            self.player1.xp = 50
-            self.player_pc.xp = 0
-            self.player1.timing_dispute = False
+            player_pc.action = "down"
+            player1.action = "down"
+            player1.pos = 1
+            player_pc.pos = 1
+            player1.movex, player1.movey = 0, 0
+            player_pc.movex, player_pc.movey = 0, 0
+            player1.facing_right = True
+            player_pc.facing_right = False
+            player1.x = 250
+            player1.y = 350
+            player_pc.x = 850
+            player_pc.y = 350
+            player1.hp = 400
+            player2.hp = 400
+            player2.xp = 50
+            player_pc.hp = 400
+            player1.xp = 50
+            player_pc.xp = 0
+            player1.timing_dispute = False
         else:
-            self.player2.action = "down"
-            self.player1.action = "down"
-            self.player1.pos = 1
-            self.player2.pos = 1
-            self.player1.movex, self.player1.movey = 0, 0
-            self.player2.movex, self.player2.movey = 0, 0
-            self.player1.facing_right = True
-            self.player2.facing_right = False
-            self.player2.timing_dispute = False
-            self.player1.kame_cont = 0
-            self.player2.kame_cont = 0
-            self.player1.x = 250
-            self.player1.y = 350
-            self.player2.x = 850
-            self.player2.y = 350
-            self.player1.hp = 400
-            self.player2.hp = 400
-            self.player1.xp = 50
-            self.player2.xp = 50
+            player2.action = "down"
+            player1.action = "down"
+            player1.pos = 1
+            player2.pos = 1
+            player1.movex, player1.movey = 0, 0
+            player2.movex, player2.movey = 0, 0
+            player1.facing_right = True
+            player2.facing_right = False
+            player2.timing_dispute = False
+            player1.kame_cont = 0
+            player2.kame_cont = 0
+            player1.x = 250
+            player1.y = 350
+            player2.x = 850
+            player2.y = 350
+            player1.hp = 400
+            player2.hp = 400
+            player1.xp = 50
+            player2.xp = 50
 
     def show_splashscreen(self):
         """
@@ -226,7 +229,7 @@ class Main():
                 if button:
                     self.time3 = time.time()*1000
                     if self.s0Option[self.is0] == 0:
-                        self.player2.player_id = 2
+                        player2.player_id = 2
                         self.game_state = 5
                         self.vs_pc = True
                         self.restart()
@@ -234,7 +237,7 @@ class Main():
                         self.game_state = 5
                         self.restart()
                         self.vs_pc = False
-                        self.player2.player_id = 2
+                        player2.player_id = 2
                     if self.s0Option[self.is0] == 2:
                         self.previous_game_state = 0
                         self.game_state = 3
@@ -285,7 +288,7 @@ class Main():
                     self.game_state = self.previous_game_state
                 if event.key == pygame.K_RETURN:
                     if self.s0Option[self.is0] == 0:
-                        self.player2.player_id = 2
+                        player2.player_id = 2
                         self.game_state = 5
                         self.vs_pc = True
                         self.restart()
@@ -293,7 +296,7 @@ class Main():
                         self.game_state = 5
                         self.restart()
                         self.vs_pc = False
-                        self.player2.player_id = 2
+                        player2.player_id = 2
                     if self.s0Option[self.is0] == 2:
                         self.previous_game_state = 0
                         self.game_state = 3
@@ -493,25 +496,25 @@ class Main():
                         if self.df > 0:
                             self.df -= 1
         if self.df == 0:
-            self.player_pc.kameham_ms = 450
-            self.player_pc.punch_ms = 200
-            self.player_pc.kame_cont = 15
-            self.player_pc.teleport_boolean = False
+            player_pc.kameham_ms = 450
+            player_pc.punch_ms = 200
+            player_pc.kame_cont = 15
+            player_pc.teleport_boolean = False
         if self.df == 1:
-            self.player_pc.kameham_ms = 160
-            self.player_pc.punch_ms = 90
-            self.player_pc.kame_cont = 22
-            self.player_pc.teleport_boolean = False
+            player_pc.kameham_ms = 160
+            player_pc.punch_ms = 90
+            player_pc.kame_cont = 22
+            player_pc.teleport_boolean = False
         if self.df == 2:
-            self.player_pc.kameham_ms = 160
-            self.player_pc.punch_ms = 90
-            self.player_pc.kame_cont = 22
-            self.player_pc.teleport_boolean = True
+            player_pc.kameham_ms = 160
+            player_pc.punch_ms = 90
+            player_pc.kame_cont = 22
+            player_pc.teleport_boolean = True
         if self.df == 3:
-            self.player_pc.kameham_ms = 70
-            self.player_pc.punch_ms = 70
-            self.player_pc.kame_cont = 23
-            self.player_pc.teleport_boolean = True
+            player_pc.kameham_ms = 70
+            player_pc.punch_ms = 70
+            player_pc.kame_cont = 23
+            player_pc.teleport_boolean = True
 
     def game_credits(self):
         """
@@ -714,11 +717,11 @@ class Main():
                 if button:
                     self.game_state = 4
                     if self.vs_pc:
-                        self.player1.load_character(self.characters[self.sc1])
-                        self.player_pc.load_character(self.characters[self.sc2])
+                        player1.load_character(self.characters[self.sc1])
+                        player_pc.load_character(self.characters[self.sc2])
                     else:
-                        self.player1.load_character(self.characters[self.sc1])
-                        self.player2.load_character(self.characters[self.sc2])
+                        player1.load_character(self.characters[self.sc1])
+                        player2.load_character(self.characters[self.sc2])
                     self.time3 = time.time()*1000
                     if i == 8:
                         self.game_state = self.previous_game_state
@@ -746,11 +749,11 @@ class Main():
                 if event.key == pygame.K_RETURN:
                     self.game_state = 4
                     if self.vs_pc:
-                        self.player1.load_character(self.characters[self.sc1])
-                        self.player_pc.load_character(self.characters[self.sc2])
+                        player1.load_character(self.characters[self.sc1])
+                        player_pc.load_character(self.characters[self.sc2])
                     else:
-                        self.player1.load_character(self.characters[self.sc1])
-                        self.player2.load_character(self.characters[self.sc2])
+                        player1.load_character(self.characters[self.sc1])
+                        player2.load_character(self.characters[self.sc2])
                 if event.key == pygame.K_d:
                     if self.sc1 >= len(self.photos3x4) - 1:
                         self.sc1 = 0
@@ -994,10 +997,10 @@ class Main():
                 pygame.quit()
                 sys.exit()
             if self.vs_pc is False:
-                self.player1.play_player_keyboard(event, p2, self.power1)
-                self.player2.play_player_keyboard(event, p1, self.power2)
+                player1.play_player_keyboard(event, p2, power1)
+                player2.play_player_keyboard(event, p1, power2)
             if self.vs_pc:
-                self.player1.play_player_keyboard(event, self.pc_players, self.power1)
+                player1.play_player_keyboard(event, self.pc_players, power1)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = 1
@@ -1005,13 +1008,13 @@ class Main():
             for i in range(pygame.joystick.get_count()):
                 joystick = pygame.joystick.Joystick(i)
                 if self.vs_pc is False:
-                    self.player1.play_player_joystick(event, p2,
-                                                self.power1, joystick, i, self.default_axis)
-                    self.player2.play_player_joystick(event, p1,
-                                                self.power2, joystick, i, self.default_axis)
+                    player1.play_player_joystick(event, p2,
+                                                power1, joystick, i, self.default_axis)
+                    player2.play_player_joystick(event, p1,
+                                                power2, joystick, i, self.default_axis)
                 if self.vs_pc:
-                    self.player1.play_player_joystick(event, self.pc_players,
-                                                self.power1, joystick, i, self.default_axis)
+                    player1.play_player_joystick(event, self.pc_players,
+                                                power1, joystick, i, self.default_axis)
                 if joystick.get_button(9):
                     self.game_state = 1
                     self.previous_game_state = 2
@@ -1020,61 +1023,61 @@ class Main():
         # playerVsplayer
         width, height = self.width, self.height
         if self.vs_pc is False:
-            self.player1.lock_inside_screen(width, height, self.delta)
-            self.player1.physical_rect()
-            self.player1.kameham_dispute(self.power_dispute, p2, self.powers)
-            self.player1.power_placing(self.power1)
-            self.player1.status_bar(self.screen, width)
-            self.player1.stand_up_position()
-            self.player1.defeated(self.screen, self.player2)
-            self.player1.turn_around(self.player2)
-            self.player1.play_effects(self.effects)
-            self.player2.lock_inside_screen(width, height, self.delta)
-            self.player2.physical_rect()
-            self.player2.power_placing(self.power2, dx2=920, dy2=0)
-            self.player2.status_bar(self.screen, width)
-            self.player2.stand_up_position()
-            self.player2.defeated(self.screen, self.player1)
-            self.player2.turn_around(self.player1)
-            self.player1.update(self.screen)
-            self.player2.update(self.screen)
-            self.player2.play_effects(self.effects2)
-            self.power1.update(self.screen)
-            self.power_dispute.update(self.screen)
-            self.power2.update(self.screen)
-            self.effects.update(self.screen)
-            self.effects2.update(self.screen)
+            player1.lock_inside_screen(width, height, self.delta)
+            player1.physical_rect()
+            player1.kameham_dispute(power_dispute, p2, self.powers)
+            player1.power_placing(power1)
+            player1.status_bar(self.screen, width)
+            player1.stand_up_position()
+            player1.defeated(self.screen, player2)
+            player1.turn_around(player2)
+            player1.play_effects(effects)
+            player2.lock_inside_screen(width, height, self.delta)
+            player2.physical_rect()
+            player2.power_placing(power2, dx2=920, dy2=0)
+            player2.status_bar(self.screen, width)
+            player2.stand_up_position()
+            player2.defeated(self.screen, self.player1)
+            player2.turn_around(player1)
+            player1.update(self.screen)
+            player2.update(self.screen)
+            player2.play_effects(effects2)
+            power1.update(self.screen)
+            power_dispute.update(self.screen)
+            power2.update(self.screen)
+            effects.update(self.screen)
+            effects2.update(self.screen)
         if self.vs_pc:
-            self.player1.lock_inside_screen(width, height, self.delta)
-            self.player1.physical_rect()
-            self.player1.power_placing(self.power1)
-            self.player1.status_bar(self.screen, width)
-            self.player1.stand_up_position()
-            self.player1.play_effects(self.effects)
-            self.player1.defeated(self.screen, self.player_pc)
-            self.player1.update(self.screen)
-            self.player1.kameham_dispute(self.power_dispute, self.pc_players, self.powers)
-            self.player_pc.lock_inside_screen(width, height, self.delta)
-            self.player_pc.physical_rect()
-            self.player_pc.power_placing(self.power3)
-            self.player_pc.status_bar(self.screen, width)
-            self.player_pc.stand_up_position()
-            self.player_pc.play_effects(self.effects2)
-            self.player_pc.update(self.screen)
-            self.power3.update(self.screen)
-            self.player1.turn_around(self.player_pc)
-            self.player_pc.turn_around(self.player1)
-            self.player_pc.play_pc(self.player1, self.power3, self.resolution)
-            self.player_pc.defeated(self.screen, self.player1)
-            self.power1.update(self.screen)
-            self.power_dispute.update(self.screen)
-            self.effects.update(self.screen)
-            self.effects2.update(self.screen)
-        fps = "fps:%.2f" % self.clock.get_fps()
+            player1.lock_inside_screen(width, height, self.delta)
+            player1.physical_rect()
+            player1.power_placing(power1)
+            player1.status_bar(self.screen, width)
+            player1.stand_up_position()
+            player1.play_effects(effects)
+            player1.defeated(self.screen, player_pc)
+            player1.update(self.screen)
+            player1.kameham_dispute(power_dispute, self.pc_players, self.powers)
+            player_pc.lock_inside_screen(width, height, self.delta)
+            player_pc.physical_rect()
+            player_pc.power_placing(power3)
+            player_pc.status_bar(self.screen, width)
+            player_pc.stand_up_position()
+            player_pc.play_effects(effects2)
+            player_pc.update(self.screen)
+            power3.update(self.screen)
+            player1.turn_around(player_pc)
+            player_pc.turn_around(player1)
+            player_pc.play_pc(player1, power3, self.resolution)
+            player_pc.defeated(self.screen, player1)
+            power1.update(self.screen)
+            power_dispute.update(self.screen)
+            effects.update(self.screen)
+            effects2.update(self.screen)
+        fps = "fps:%.2f" % clock.get_fps()
         my_font = pygame.font.SysFont("monospace", 25)
         fps_word = my_font.render(fps, 1, WHITE)
         self.screen.blit(fps_word, (0, 730))
-        self.clock.tick(60)
+        clock.tick(60)
         pygame.display.update()
 
     def run(self):

@@ -9,7 +9,11 @@ Requirements: Python 2 or 3 + Pygame
 
 ####To play
 1. Download the zip file or clone the project.
-2. Run play.py
+2. Run python play.py
+
+####Command line arguments
+python play -w, to play in window mode.
+python play -h, to see the available commands.
 
 ####Controller Support
 Playable with keyboards or controllers.
