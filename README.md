@@ -12,8 +12,8 @@ Requirements: Python 2 or 3 + Pygame
 2. Run python play.py
 
 ####Command line arguments
-python play -w, to play in window mode.
-python play -h, to see the available commands.
+* python play -w, to play in window mode.
+* python play -h, to see the available commands.
 
 ####Controller Support
 Playable with keyboards or controllers.
