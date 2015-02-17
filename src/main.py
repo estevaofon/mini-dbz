@@ -6,7 +6,6 @@ import pygame
 from spriteanimation import SpriteAnimation
 from npc import NPC
 from player import Player
-#import pygame._view
 
 pygame.init()
 pygame.joystick.init()
@@ -301,10 +300,8 @@ def open_menu():
                     pygame.quit()
                     sys.exit()
 
-    if time.time()*1000-time1*1000 >200:
+    if time.time()*1000-time1*1000 > 200:
         move_one = True
-
-
     black = 0, 0, 0
     screen.fill(black)
     screen.blit(background_openning, (-70, 0))
@@ -464,7 +461,7 @@ def options():
                 if i == 8:
                     game_state = previous_game_state
 
-    if time.time()*1000-time1*1000 >200:
+    if time.time()*1000-time1*1000 > 200:
         move_one = True
     black = 0, 0, 0
     screen.fill(black)
@@ -828,10 +825,8 @@ def choose_character():
                 if i == 8:
                     game_state = previous_game_state
 
-    if time.time()*1000-time1*1000 >200:
+    if time.time()*1000-time1*1000 > 200:
         move_one = True
-
-
     black = 0, 0, 0
     screen.fill(black)
     screen.blit(background_openning, (-70, 0))
@@ -1008,7 +1003,7 @@ def load_menu():
             time1 = time.time()
             move_one = False
         for i in range(buttons):
-            if time.time()*1000 - time3> 300:
+            if time.time()*1000 - time3 > 300:
                 button = joystick.get_button(i)
             else:
                 button = 0
@@ -1028,7 +1023,6 @@ def load_menu():
                 if s1Option[is1] == 4:
                     pygame.quit()
                     sys.exit()
-
 
     if time.time()*1000-time1*1000 > 200:
         move_one = True
@@ -1112,7 +1106,7 @@ def distance(xo, yo, x, y):
     return d
 
 
-def play_loop():
+def fight_loop():
     """
     Game Loop
     """
@@ -1142,10 +1136,13 @@ def play_loop():
         for i in range(pygame.joystick.get_count()):
             joystick = pygame.joystick.Joystick(i)
             if vs_pc is False:
-                player1.play_player_joystick(event, p2, power1, joystick, i, default_axis)
-                player2.play_player_joystick(event, p1, power2, joystick, i, default_axis)
+                player1.play_player_joystick(event, p2,
+                                             power1, joystick, i, default_axis)
+                player2.play_player_joystick(event, p1,
+                                             power2, joystick, i, default_axis)
             if vs_pc:
-                player1.play_player_joystick(event, pc_players, power1, joystick, i, default_axis)
+                player1.play_player_joystick(event, pc_players,
+                                             power1, joystick, i, default_axis)
             if joystick.get_button(9):
                 game_state = 1
                 previous_game_state = 2
@@ -1212,23 +1209,25 @@ def play_loop():
     clock.tick(60)
     pygame.display.update()
 
-show_splashscreen()
-#show_video()
-load_music(song[0])
-while 1:
-    if game_state == 0:
-        open_menu()
-    elif game_state == 1:
-        load_menu()
-    elif game_state == 2:
-        play_loop()
-    elif game_state == 3:
-        options()
-    elif game_state == 4:
-        choose_scenery()
-    elif game_state == 5:
-        choose_character()
-    elif game_state == 6:
-        game_credits()
-    elif game_state == 7:
-        keyboard()
+
+def run():
+    show_splashscreen()
+    # show_video()
+    load_music(song[0])
+    while 1:
+        if game_state == 0:
+            open_menu()
+        elif game_state == 1:
+            load_menu()
+        elif game_state == 2:
+            fight_loop()
+        elif game_state == 3:
+            options()
+        elif game_state == 4:
+            choose_scenery()
+        elif game_state == 5:
+            choose_character()
+        elif game_state == 6:
+            game_credits()
+        elif game_state == 7:
+            keyboard()
