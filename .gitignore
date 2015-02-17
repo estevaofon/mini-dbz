@@ -1,5 +1,5 @@
 *pyc
 setup.py
 src/.idea
-src/.ropeproject
+.ropeproject
 dist
