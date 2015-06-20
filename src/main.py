@@ -1037,7 +1037,7 @@ class Main():
             player2.power_placing(power2, dx2=920, dy2=0)
             player2.status_bar(self.screen, width)
             player2.stand_up_position()
-            player2.defeated(self.screen, self.player1)
+            player2.defeated(self.screen, player1)
             player2.turn_around(player1)
             player1.update(self.screen)
             player2.update(self.screen)
