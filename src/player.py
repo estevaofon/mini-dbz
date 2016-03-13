@@ -5,8 +5,8 @@ import pygame
 from characters import Characters
 
 pygame.init()
-pygame.joystick.init()
 
+pygame.joystick.init()
 for x in range(pygame.joystick.get_count()):
     joystick = pygame.joystick.Joystick(x)
     joystick.init()

@@ -8,10 +8,13 @@ from npc import NPC
 from player import Player
 
 pygame.init()
-pygame.joystick.init()
-for x in range(pygame.joystick.get_count()):
-    joystick = pygame.joystick.Joystick(x)
-    joystick.init()
+joystick_enabled = True
+
+if(joystick_enabled):
+    pygame.joystick.init()
+    for x in range(pygame.joystick.get_count()):
+        joystick = pygame.joystick.Joystick(x)
+        joystick.init()
 
 player1 = Player(initial_action="down", player_id=1)
 player2 = Player(initial_action="down", player_id=2)
@@ -202,54 +205,55 @@ class Main():
         """
         Main Menu
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            buttons = joystick.get_numbuttons()
-            axis = joystick.get_axis(1)
-            axis = round(axis, 3)
-            if axis != 1 and axis != -1:
-                self.default_axis = axis
-            if axis > self.default_axis and self.move_one:
-                self.is0 += 1
-                self.time1 = time.time()
-                self.move_one = False
-            if axis < self.default_axis and self.move_one:
-                self.is0 += -1
-                self.time1 = time.time()
-                self.move_one = False
-            if self.is0 < 0:
-                self.is0 = 0
-            if self.is0 > (len(self.s0Option)-1):
-                self.is0 = 4
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.time3 = time.time()*1000
-                    if self.s0Option[self.is0] == 0:
-                        player2.player_id = 2
-                        self.game_state = 5
-                        self.vs_pc = True
-                        self.restart()
-                    if self.s0Option[self.is0] == 1:
-                        self.game_state = 5
-                        self.restart()
-                        self.vs_pc = False
-                        player2.player_id = 2
-                    if self.s0Option[self.is0] == 2:
-                        self.previous_game_state = 0
-                        self.game_state = 3
-                    if self.s0Option[self.is0] == 3:
-                        self.previous_game_state = 0
-                        self.game_state = 6
-                    if self.s0Option[self.is0] == 4:
-                        pygame.quit()
-                        sys.exit()
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                buttons = joystick.get_numbuttons()
+                axis = joystick.get_axis(1)
+                axis = round(axis, 3)
+                if axis != 1 and axis != -1:
+                    self.default_axis = axis
+                if axis > self.default_axis and self.move_one:
+                    self.is0 += 1
+                    self.time1 = time.time()
+                    self.move_one = False
+                if axis < self.default_axis and self.move_one:
+                    self.is0 += -1
+                    self.time1 = time.time()
+                    self.move_one = False
+                if self.is0 < 0:
+                    self.is0 = 0
+                if self.is0 > (len(self.s0Option)-1):
+                    self.is0 = 4
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        self.time3 = time.time()*1000
+                        if self.s0Option[self.is0] == 0:
+                            player2.player_id = 2
+                            self.game_state = 5
+                            self.vs_pc = True
+                            self.restart()
+                        if self.s0Option[self.is0] == 1:
+                            self.game_state = 5
+                            self.restart()
+                            self.vs_pc = False
+                            player2.player_id = 2
+                        if self.s0Option[self.is0] == 2:
+                            self.previous_game_state = 0
+                            self.game_state = 3
+                        if self.s0Option[self.is0] == 3:
+                            self.previous_game_state = 0
+                            self.game_state = 6
+                        if self.s0Option[self.is0] == 4:
+                            pygame.quit()
+                            sys.exit()
 
-        if time.time()*1000-self.time1*1000 > 200:
-            self.move_one = True
+            if time.time()*1000-self.time1*1000 > 200:
+                self.move_one = True
         black = 0, 0, 0
         self.screen.fill(black)
         self.screen.blit(self.background_openning, (-70, 0))
@@ -317,84 +321,85 @@ class Main():
         """
         Option Menu
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            axes = joystick.get_numaxes()
-            buttons = joystick.get_numbuttons()
-            for i in range(axes):
-                axis = joystick.get_axis(i)
-                axis = round(axis, 3)
-                if i == 0:
-                    if axis > self.default_axis and self.move_one:
-                        if self.s3Option[self.is3] == 0:
-                            self.delta += 1
-                        if self.s3Option[self.is3] == 2:
-                            if self.volume < 0.9:
-                                self.volume += 0.1
-                                pygame.mixer.music.set_volume(self.volume)
-                        if self.s3Option[self.is3] == 1:
-                            if self.sg == len(self.song) - 1:
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                axes = joystick.get_numaxes()
+                buttons = joystick.get_numbuttons()
+                for i in range(axes):
+                    axis = joystick.get_axis(i)
+                    axis = round(axis, 3)
+                    if i == 0:
+                        if axis > self.default_axis and self.move_one:
+                            if self.s3Option[self.is3] == 0:
+                                self.delta += 1
+                            if self.s3Option[self.is3] == 2:
+                                if self.volume < 0.9:
+                                    self.volume += 0.1
+                                    pygame.mixer.music.set_volume(self.volume)
+                            if self.s3Option[self.is3] == 1:
+                                if self.sg == len(self.song) - 1:
+                                    self.sg -= 1
+                                self.sg += 1
+                                self.load_music(self.song[self.sg])
+                            if self.s3Option[self.is3] == 3:
+                                if self.df < len(self.level) - 1:
+                                    self.df += 1
+                            self.time1 = time.time()
+                            self.move_one = False
+                        if axis < self.default_axis and self.move_one:
+                            if self.s3Option[self.is3] == 0:
+                                self.delta -= 1
+                            if self.s3Option[self.is3] == 2:
+                                if self.volume > 0.1:
+                                    self.volume -= 0.1
+                                    pygame.mixer.music.set_volume(self.volume)
+                                if self.volume < 0.2:
+                                    self.volume = 0
+                                    pygame.mixer.music.set_volume(self.volume)
+                            if self.s3Option[self.is3] == 1:
+                                if self.sg == 0:
+                                    self.sg = len(self.song)
                                 self.sg -= 1
-                            self.sg += 1
-                            self.load_music(self.song[self.sg])
-                        if self.s3Option[self.is3] == 3:
-                            if self.df < len(self.level) - 1:
-                                self.df += 1
-                        self.time1 = time.time()
-                        self.move_one = False
-                    if axis < self.default_axis and self.move_one:
-                        if self.s3Option[self.is3] == 0:
-                            self.delta -= 1
-                        if self.s3Option[self.is3] == 2:
-                            if self.volume > 0.1:
-                                self.volume -= 0.1
-                                pygame.mixer.music.set_volume(self.volume)
-                            if self.volume < 0.2:
-                                self.volume = 0
-                                pygame.mixer.music.set_volume(self.volume)
-                        if self.s3Option[self.is3] == 1:
-                            if self.sg == 0:
-                                self.sg = len(self.song)
-                            self.sg -= 1
-                            self.load_music(self.song[self.sg])
-                        if self.s3Option[self.is3] == 3:
-                            if self.df > 0:
-                                self.df -= 1
-                        self.time1 = time.time()
-                        self.move_one = False
-
-                if i == 1:
-                    if axis > self.default_axis and self.move_one:
-                        if self.s3Option[self.is3] < self.s3Option[-1]:
-                            self.is3 += 1
+                                self.load_music(self.song[self.sg])
+                            if self.s3Option[self.is3] == 3:
+                                if self.df > 0:
+                                    self.df -= 1
                             self.time1 = time.time()
                             self.move_one = False
-                    if axis < self.default_axis and self.move_one:
-                        if self.s3Option[self.is3] > self.s3Option[0]:
-                            self.is3 -= 1
-                            self.time1 = time.time()
-                            self.move_one = False
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.time3 = time.time()*1000
-                    if self.s3Option[self.is3] == 5:
-                        if self.played_once:
-                            self.game_state = 2
-                        else:
-                            pass
-                    if self.s3Option[self.is3] == 6:
-                        self.game_state = self.previous_game_state
-                    if self.s3Option[self.is3] == 4:
-                        self.game_state = 7
-                    if i == 8:
-                        self.game_state = self.previous_game_state
 
-        if time.time()*1000-self.time1*1000 > 200:
-            self.move_one = True
+                    if i == 1:
+                        if axis > self.default_axis and self.move_one:
+                            if self.s3Option[self.is3] < self.s3Option[-1]:
+                                self.is3 += 1
+                                self.time1 = time.time()
+                                self.move_one = False
+                        if axis < self.default_axis and self.move_one:
+                            if self.s3Option[self.is3] > self.s3Option[0]:
+                                self.is3 -= 1
+                                self.time1 = time.time()
+                                self.move_one = False
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        self.time3 = time.time()*1000
+                        if self.s3Option[self.is3] == 5:
+                            if self.played_once:
+                                self.game_state = 2
+                            else:
+                                pass
+                        if self.s3Option[self.is3] == 6:
+                            self.game_state = self.previous_game_state
+                        if self.s3Option[self.is3] == 4:
+                            self.game_state = 7
+                        if i == 8:
+                            self.game_state = self.previous_game_state
+
+            if time.time()*1000-self.time1*1000 > 200:
+                self.move_one = True
         black = 0, 0, 0
         self.screen.fill(black)
         self.screen.blit(self.background_openning, (-70, 0))
@@ -520,19 +525,20 @@ class Main():
         """
         Credits screen
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            buttons = joystick.get_numbuttons()
-            axis = joystick.get_axis(1)
-            axis = round(axis, 3)
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.game_state = self.previous_game_state
-                    self.time3 = time.time()*1000
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                buttons = joystick.get_numbuttons()
+                axis = joystick.get_axis(1)
+                axis = round(axis, 3)
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        self.game_state = self.previous_game_state
+                        self.time3 = time.time()*1000
         black = 0, 0, 0
         self.screen.fill(black)
         self.screen.blit(self.background_openning, (-70, 0))
@@ -578,19 +584,20 @@ class Main():
         """
         Screen showing the Keys used to play
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            buttons = joystick.get_numbuttons()
-            axis = joystick.get_axis(1)
-            axis = round(axis, 3)
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.game_state = self.previous_game_state
-                    self.time3 = time.time()*1000
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                buttons = joystick.get_numbuttons()
+                axis = joystick.get_axis(1)
+                axis = round(axis, 3)
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        self.game_state = self.previous_game_state
+                        self.time3 = time.time()*1000
 
         black = 0, 0, 0
         self.screen.fill(black)
@@ -662,72 +669,73 @@ class Main():
         """
         Choose character screen
         """
-        for i in range(pygame.joystick.get_count()):
-            joynumber = i
-            joystick = pygame.joystick.Joystick(i)
-            axes = joystick.get_numaxes()
-            buttons = joystick.get_numbuttons()
-            for i in range(axes):
-                axis = joystick.get_axis(i)
-                axis = round(axis, 3)
-                if i == 0 and joynumber == 1:
-                    if axis > self.default_axis and self.move_one:
-                        # right
-                        self.xp2 += 150
-                        self.sc2 += 1
-                        self.time1 = time.time()
-                        self.move_one = False
-                    if axis < self.default_axis and self.move_one:
-                        # left
-                        self.xp2 -= 150
-                        self.sc2 -= 1
-                        self.time1 = time.time()
-                        self.move_one = False
-                if self.sc2 > len(self.photos3x4) - 1:
-                    self.sc2 = len(self.photos3x4) - 1
-                    self.xp2 = self.xp1d + 600
-                if self.sc2 < 0:
-                    self.sc2 = 0
-                    self.xp2 = self.xp1d
-                if i == 0 and joynumber == 0:
-                    if axis > self.default_axis and self.move_one:
-                        # right
-                        self.xp1 += 150
-                        self.sc1 += 1
-                        self.time1 = time.time()
-                        self.move_one = False
-                    if axis < self.default_axis and self.move_one:
-                        # left
-                        self.xp1 -= 150
-                        self.sc1 -= 1
-                        self.time1 = time.time()
-                        self.move_one = False
-                if self.sc1 > len(self.photos3x4) - 1:
-                    self.sc1 = len(self.photos3x4) - 1
-                    self.xp1 = self.xp1d + 600
-                if self.sc1 < 0:
-                    self.sc1 = 0
-                    self.xp1 = self.xp1d
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joynumber = i
+                joystick = pygame.joystick.Joystick(i)
+                axes = joystick.get_numaxes()
+                buttons = joystick.get_numbuttons()
+                for i in range(axes):
+                    axis = joystick.get_axis(i)
+                    axis = round(axis, 3)
+                    if i == 0 and joynumber == 1:
+                        if axis > self.default_axis and self.move_one:
+                            # right
+                            self.xp2 += 150
+                            self.sc2 += 1
+                            self.time1 = time.time()
+                            self.move_one = False
+                        if axis < self.default_axis and self.move_one:
+                            # left
+                            self.xp2 -= 150
+                            self.sc2 -= 1
+                            self.time1 = time.time()
+                            self.move_one = False
+                    if self.sc2 > len(self.photos3x4) - 1:
+                        self.sc2 = len(self.photos3x4) - 1
+                        self.xp2 = self.xp1d + 600
+                    if self.sc2 < 0:
+                        self.sc2 = 0
+                        self.xp2 = self.xp1d
+                    if i == 0 and joynumber == 0:
+                        if axis > self.default_axis and self.move_one:
+                            # right
+                            self.xp1 += 150
+                            self.sc1 += 1
+                            self.time1 = time.time()
+                            self.move_one = False
+                        if axis < self.default_axis and self.move_one:
+                            # left
+                            self.xp1 -= 150
+                            self.sc1 -= 1
+                            self.time1 = time.time()
+                            self.move_one = False
+                    if self.sc1 > len(self.photos3x4) - 1:
+                        self.sc1 = len(self.photos3x4) - 1
+                        self.xp1 = self.xp1d + 600
+                    if self.sc1 < 0:
+                        self.sc1 = 0
+                        self.xp1 = self.xp1d
 
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.game_state = 4
-                    if self.vs_pc:
-                        player1.load_character(self.characters[self.sc1])
-                        player_pc.load_character(self.characters[self.sc2])
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
                     else:
-                        player1.load_character(self.characters[self.sc1])
-                        player2.load_character(self.characters[self.sc2])
-                    self.time3 = time.time()*1000
-                    if i == 8:
-                        self.game_state = self.previous_game_state
+                        button = 0
+                    if button:
+                        self.game_state = 4
+                        if self.vs_pc:
+                            player1.load_character(self.characters[self.sc1])
+                            player_pc.load_character(self.characters[self.sc2])
+                        else:
+                            player1.load_character(self.characters[self.sc1])
+                            player2.load_character(self.characters[self.sc2])
+                        self.time3 = time.time()*1000
+                        if i == 8:
+                            self.game_state = self.previous_game_state
 
-        if time.time()*1000-self.time1*1000 > 200:
-            self.move_one = True
+            if time.time()*1000-self.time1*1000 > 200:
+                self.move_one = True
         black = 0, 0, 0
         self.screen.fill(black)
         self.screen.blit(self.background_openning, (-70, 0))
@@ -800,39 +808,40 @@ class Main():
         """
         Choose scenery screen
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            axes = joystick.get_numaxes()
-            buttons = joystick.get_numbuttons()
-            for i in range(axes):
-                axis = joystick.get_axis(i)
-                axis = round(axis, 3)
-                if axis > self.default_axis and self.move_one:
-                    # right
-                    if self.sc == len(self.scenery) - 1:
-                        self.sc = -1
-                    self.sc += 1
-                    self.scene1 = pygame.transform.scale(self.scenery[self.sc], (500, 300))
-                    self.time1 = time.time()
-                    self.move_one = False
-                if axis < self.default_axis and self.move_one:
-                    # left
-                    if self.sc == 0:
-                        self.sc = len(self.scenery)
-                    self.sc -= 1
-                    self.scene1 = pygame.transform.scale(self.scenery[self.sc], (500, 300))
-                    self.time1 = time.time()
-                    self.move_one = False
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    self.game_state = 2
-                    self.background = self.scenery[self.sc]
-        if time.time()*1000-self.time1*1000 > 200:
-            self.move_one = True
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                axes = joystick.get_numaxes()
+                buttons = joystick.get_numbuttons()
+                for i in range(axes):
+                    axis = joystick.get_axis(i)
+                    axis = round(axis, 3)
+                    if axis > self.default_axis and self.move_one:
+                        # right
+                        if self.sc == len(self.scenery) - 1:
+                            self.sc = -1
+                        self.sc += 1
+                        self.scene1 = pygame.transform.scale(self.scenery[self.sc], (500, 300))
+                        self.time1 = time.time()
+                        self.move_one = False
+                    if axis < self.default_axis and self.move_one:
+                        # left
+                        if self.sc == 0:
+                            self.sc = len(self.scenery)
+                        self.sc -= 1
+                        self.scene1 = pygame.transform.scale(self.scenery[self.sc], (500, 300))
+                        self.time1 = time.time()
+                        self.move_one = False
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        self.game_state = 2
+                        self.background = self.scenery[self.sc]
+            if time.time()*1000-self.time1*1000 > 200:
+                self.move_one = True
         black = 0, 0, 0
         self.screen.fill(black)
         self.screen.blit(self.background_openning, (-70, 0))
@@ -870,43 +879,44 @@ class Main():
         """
         Menu during the playing game
         """
-        for i in range(pygame.joystick.get_count()):
-            joystick = pygame.joystick.Joystick(i)
-            buttons = joystick.get_numbuttons()
-            axis = joystick.get_axis(1)
-            axis = round(axis, 3)
-            if axis > self.default_axis and self.move_one:
-                self.is1 += 1
-                self.time1 = time.time()
-                self.move_one = False
-            if axis < self.default_axis and self.move_one:
-                self.is1 += -1
-                self.time1 = time.time()
-                self.move_one = False
-            for i in range(buttons):
-                if time.time()*1000 - self.time3 > 300:
-                    button = joystick.get_button(i)
-                else:
-                    button = 0
-                if button:
-                    if self.s1Option[self.is1] == 0:
-                        self.game_state = 0
-                        self.time3 = time.time()*1000
-                    if self.s1Option[self.is1] == 1:
-                        self.game_state = 2
-                    if self.s1Option[self.is1] == 2:
-                        self.game_state = 3
-                        self.previous_game_state = 1
-                        self.time3 = time.time()*1000
-                    if self.s1Option[self.is1] == 3:
-                        self.restart()
-                        self.game_state = 2
-                    if self.s1Option[self.is1] == 4:
-                        pygame.quit()
-                        sys.exit()
+        if(joystick_enabled):
+            for i in range(pygame.joystick.get_count()):
+                joystick = pygame.joystick.Joystick(i)
+                buttons = joystick.get_numbuttons()
+                axis = joystick.get_axis(1)
+                axis = round(axis, 3)
+                if axis > self.default_axis and self.move_one:
+                    self.is1 += 1
+                    self.time1 = time.time()
+                    self.move_one = False
+                if axis < self.default_axis and self.move_one:
+                    self.is1 += -1
+                    self.time1 = time.time()
+                    self.move_one = False
+                for i in range(buttons):
+                    if time.time()*1000 - self.time3 > 300:
+                        button = joystick.get_button(i)
+                    else:
+                        button = 0
+                    if button:
+                        if self.s1Option[self.is1] == 0:
+                            self.game_state = 0
+                            self.time3 = time.time()*1000
+                        if self.s1Option[self.is1] == 1:
+                            self.game_state = 2
+                        if self.s1Option[self.is1] == 2:
+                            self.game_state = 3
+                            self.previous_game_state = 1
+                            self.time3 = time.time()*1000
+                        if self.s1Option[self.is1] == 3:
+                            self.restart()
+                            self.game_state = 2
+                        if self.s1Option[self.is1] == 4:
+                            pygame.quit()
+                            sys.exit()
 
-        if time.time()*1000-self.time1*1000 > 200:
-            self.move_one = True
+            if time.time()*1000-self.time1*1000 > 200:
+                self.move_one = True
 
         black = 0, 0, 0
         self.screen.fill(black)
@@ -1005,21 +1015,21 @@ class Main():
                 if event.key == pygame.K_ESCAPE:
                     self.game_state = 1
                     self.previous_game_state = 2
-            for i in range(pygame.joystick.get_count()):
-                joystick = pygame.joystick.Joystick(i)
-                if self.vs_pc is False:
-                    player1.play_player_joystick(event, p2,
-                                                power1, joystick, i, self.default_axis)
-                    player2.play_player_joystick(event, p1,
-                                                power2, joystick, i, self.default_axis)
-                if self.vs_pc:
-                    player1.play_player_joystick(event, self.pc_players,
-                                                power1, joystick, i, self.default_axis)
-                if joystick.get_button(9):
-                    self.game_state = 1
-                    self.previous_game_state = 2
-                    self.time3 = time.time()*1000
-
+            if(joystick_enabled):
+                for i in range(pygame.joystick.get_count()):
+                    joystick = pygame.joystick.Joystick(i)
+                    if self.vs_pc is False:
+                        player1.play_player_joystick(event, p2,
+                                                    power1, joystick, i, self.default_axis)
+                        player2.play_player_joystick(event, p1,
+                                                    power2, joystick, i, self.default_axis)
+                    if self.vs_pc:
+                        player1.play_player_joystick(event, self.pc_players,
+                                                    power1, joystick, i, self.default_axis)
+                    if joystick.get_button(9):
+                        self.game_state = 1
+                        self.previous_game_state = 2
+                        self.time3 = time.time()*1000
         # playerVsplayer
         width, height = self.width, self.height
         if self.vs_pc is False:
