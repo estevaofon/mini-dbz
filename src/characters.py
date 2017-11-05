@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import pygame
-from spriteanimation import SpriteAnimation
+from .spriteanimation import SpriteAnimation
 
 
 class Characters(SpriteAnimation):

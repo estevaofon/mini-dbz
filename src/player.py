@@ -2,7 +2,7 @@
 import time
 import random
 import pygame
-from characters import Characters
+from .characters import Characters
 
 pygame.init()
 

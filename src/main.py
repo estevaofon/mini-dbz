@@ -3,9 +3,9 @@ import sys
 import time
 import ntpath
 import pygame
-from spriteanimation import SpriteAnimation
-from npc import NPC
-from player import Player
+from .spriteanimation import SpriteAnimation
+from .npc import NPC
+from .player import Player
 
 pygame.init()
 joystick_enabled = True

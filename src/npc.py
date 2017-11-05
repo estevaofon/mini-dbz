@@ -2,7 +2,7 @@
 import time
 import random
 import pygame
-from characters import Characters
+from .characters import Characters
 
 
 class NPC(Characters):
@@ -299,7 +299,7 @@ class NPC(Characters):
                     enemy_player.hp -= enemy_player.hit_defended
             self.initialTime = time.time()
             self.initial_time2 = time.time()*1000
-    
+
     def load(self, enemy_player):
         """
         Load XP
