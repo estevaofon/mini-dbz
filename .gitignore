@@ -4,3 +4,4 @@ src/.idea
 .ropeproject
 dist
 venv
+env
