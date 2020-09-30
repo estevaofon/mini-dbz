@@ -1,11 +1,15 @@
-Mini DBZ
+Mini DBZ(Dragon Ball Z)
 ========
+A Game made by me for """EVERYONE"""    
+it is free enjoy it     
+See a first look on 
 [Youtube Video](https://www.youtube.com/watch?v=ppBaWFEijIE&feature=youtu.be)
 
 ![Alt text](/resources/imagens/divulgacao/imagem1.png?raw=true "mini-dbz")
 
 To play
 -------
+istall the following 
 ```bash
   $ pip install pygame
   $ python play.py
