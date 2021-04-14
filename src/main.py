@@ -88,8 +88,8 @@ class Main():
         self.df = 2
         self.volume = 0.5
         self.vs_pc = False
-        song1 = 'resources/sounds/sparking.mp3'
-        song3 = 'resources/sounds/cha-la.mp3'
+        song1 = 'resources/sounds/sparking.ogg'
+        song3 = 'resources/sounds/cha-la.ogg'
         self.song = [song1, song3]
         self.level = ['easy', 'Medium', 'Hard', 'Super Sayajin']
         self.xp1 = 400
